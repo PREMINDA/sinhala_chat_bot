@@ -12,24 +12,25 @@ export default function Home() {
   const [message, setMessage, messageRef] = useState<MessageProps[]>(test);
   const [loading, setLoading] = useState(false);
 
+
   const callApi = async (input:string) =>{
     setLoading(true);
     const myMessage: MessageProps = { text: input, from: Creator.User, key: new Date().getTime() };
     setMessage([...messageRef.current, myMessage]);
     
-    // const res = await fetch('/api/hello', {method:'POST',
-    //   headers: {'Content-Type': 'application/json'}, 
-    //   body: JSON.stringify({text: input})
-    // }).then((res) => res.json());
+    const res = await fetch('http://localhost:8000/chat/ask', {method:'POST',
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify({text: input})
+    }).then((res) => res.json());
 
-    // setLoading(false);
+    setLoading(false);
 
-    // if(res){
-    //   const botMessage: MessageProps = { text: res.text, from: Creator.Bot, key: new Date().getTime() };
-    //   setMessage([...messageRef.current, botMessage]);
-    // }else{
-    //   //show error
-    // }
+    if(res){
+      const botMessage: MessageProps = { text: res.resonse,user_input: input, from: Creator.Bot, key: new Date().getTime() };
+      setMessage([...messageRef.current, botMessage]);
+    }else{
+      //show error
+    }
 
     
   }
@@ -39,11 +40,13 @@ export default function Home() {
     <main className='bg-thembg'>
     <div className='relative max-w-4xl mx-auto h-screen flex flex-col justify-between'>
       <div className='px-4 pt-10 '>
-        {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} text={item.text}/> })}
+        {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text}/> })}
         {message.length==0&&<p className='text-center text-gray-400'>I am at your Service</p>}
       </div>
-      <div className='sticky bottom-0 w-full pb-10 px-4'>
-        <ChatInput onSend={(input)=>callApi(input)} disabled={loading}/>
+      <div className='sticky bottom-0 w-full px-4'>
+        <div className='w-full h-24 bg-thembg'>
+         <ChatInput onSend={(input)=>callApi(input)} disabled={loading}/>
+        </div>
       </div>
     </div>
     </main>
