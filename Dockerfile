@@ -8,4 +8,4 @@ RUN npm run build --prod
 
 #stage 2
 FROM nginx:alpine
-COPY --from=node /app/dist/demo-app /usr/share/nginx/html
+COPY --from=node /app/dist/sinhala_chat_bot /usr/share/nginx/html
