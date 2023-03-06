@@ -18,7 +18,7 @@ export default function Home() {
     const myMessage: MessageProps = { text: input, from: Creator.User, key: new Date().getTime() };
     setMessage([...messageRef.current, myMessage]);
     
-    const res = await fetch('http://localhost:8000/chat/ask', {method:'POST',
+    const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/chat/ask`, {method:'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({text: input})
     }).then((res) => res.json());
@@ -26,7 +26,7 @@ export default function Home() {
     setLoading(false);
 
     if(res){
-      const botMessage: MessageProps = { text: res.resonse,user_input: input, from: Creator.Bot, key: new Date().getTime() };
+      const botMessage: MessageProps = { text: res.response,user_input: input, from: Creator.Bot, key: new Date().getTime() };
       setMessage([...messageRef.current, botMessage]);
     }else{
       //show error
