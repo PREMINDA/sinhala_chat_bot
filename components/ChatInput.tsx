@@ -5,6 +5,7 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
    const[input,setInput] = useState('');
 
    const sendInput = () => {
+      if(input.trim() === '' || disabled) return;
       onSend(input);
       setInput('');
    };
