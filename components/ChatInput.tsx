@@ -1,29 +1,127 @@
 import { InputProps } from "@/interfaces/models";
-import { useState } from "react";
+import { useEffect, useMemo, useRef} from "react";
+import useState from 'react-usestateref'
+import SinhalaListview from "./SinhalaListview";
 
 const ChatInput = ({onSend, disabled}:InputProps) => {
    const[input,setInput] = useState('');
+   const[miniInput,setMiniInput1] = useState('');
+   const[list,setList,listRef] = useState<string[]>([]);
+   const ref1 = useRef<HTMLInputElement>(null);
+   const ref2 = useRef<HTMLInputElement>(null);
+   const ref3 = useRef<HTMLInputElement>(null);
+   const [activeIndex, setActiveIndex] = useState(0);
+   const [isBackSpce,setIsBackSpce] = useState<boolean>(false);
+
+   
+
+   
 
    const sendInput = () => {
       onSend(input);
       setInput('');
    };
    
-   const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
+   const handleKeyDownInput = (e:React.KeyboardEvent<HTMLInputElement>) => {
       if(e.key === 'Enter'){
          sendInput();
       }
+      if(e.key === ' '){
+         setInput(input+' ')
+         ref2.current?.focus();
+      }
+      if(e.key === 'Backspace'){
+         setIsBackSpce(true);
+         ref2.current?.focus();
+      }else{
+         setIsBackSpce(false);
+      }
    }
+
+   const handleKeyDownList = (e:React.KeyboardEvent<HTMLInputElement>) => {
+      if(list.length>0){
+         if(e.key === 'Enter'){
+            ref2.current?.focus();
+            setInput(input+' '+list[activeIndex]);
+            setMiniInput1('');
+            setActiveIndex(0); 
+            setList([]);
+         }
+         if(e.key === ' '){
+            ref2.current?.focus();
+            setInput(input+' '+list[activeIndex]);
+            setMiniInput1('');
+            setActiveIndex(0);
+            setList([]);
+         }
+   
+         if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setActiveIndex((prevIndex) =>
+              prevIndex === 0 ? list.length - 1 : prevIndex - 1
+            );
+          } else if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setActiveIndex((prevIndex) =>
+              prevIndex === list.length - 1 ? 0 : prevIndex + 1
+            );
+          }
+      }
+   }
+
+   const sinhalaType=(userInput:string)=>{
+      setMiniInput1(userInput);
+      
+      let googleTransliterate = require('google-input-tool');
+   
+      
+      setList([]);
+      googleTransliterate(new XMLHttpRequest(), userInput, 'si-t-i0-und', 4).then(function (response: any) {
+            response.forEach((element:string[],index:number) => {
+               if(index == 4)return;
+               setList([...listRef.current,element[0]]);
+            });
+      })
+   }
+
+   const mainInput=(letter:string)=>{
+      if(!isBackSpce){
+         setMiniInput1('');
+         setMiniInput1(lastWord(letter));
+         ref1.current?.focus();
+      }else{
+         setInput(letter)
+      }
+   }
+
+   const lastWord =(words:string)=>{
+      var n = words.split(" ");
+      return n[n.length - 1];
+  }
+
    return (
-    <div className="bg-white border-2 p-2 rounded-lg flex justify-center">
+   <div>
+      <div>
+         <input onKeyDown={handleKeyDownList} style= {{width: `${miniInput.length}ch`}} className = "text-gray-800 focus:outline-none" value={miniInput} onChange={(e) => sinhalaType(e.target.value)} ref={ref1} type="text"/>
+         <>
+            <div ref={ref3} className="bg-white w-fit">
+               {list && list.map((element:string,index:number)=>{
+                return  <SinhalaListview key={index} location={index} textNumber={activeIndex} text={element}/>
+               })}
+            </div>
+         </>
+      </div>
+    <div className="bg-white border-2 p-2 rounded-lg flex justify-center"> 
         <input 
+            ref= {ref2}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDownInput}
+            onChange={(e) => {mainInput(e.target.value);}}
             className = "w-full p-2 px-3 text-gray-800 rounded-lg focus:outline-none"
             type="text"
             placeholder="Ask me anything..."
             disabled={disabled}
-            onKeyDown={handleKeyDown}
+            
         />
         {disabled && (
             <div className="flex items-center justify-center opacity-50">
@@ -32,7 +130,8 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
               role="status">
               <span
                 className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-                >Loading...</span
+                >Loading...
+              </span
               >
             </div>
           </div>
@@ -48,6 +147,7 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
                /> 
             </svg>
         </button>)}
+    </div>
     </div>
    )
 }

@@ -43,3 +43,9 @@ export interface ReactionPayload{
   chatbot_response: string;
   reaction: string;
 }
+
+export interface SinhalaList{
+  text:string;
+  textNumber:number;
+  location:number;
+}

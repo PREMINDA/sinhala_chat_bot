@@ -12,12 +12,12 @@ export default function Home() {
   const [message, setMessage, messageRef] = useState<MessageProps[]>(test);
   const [loading, setLoading] = useState(false);
 
-
   const callApi = async (input:string) =>{
     setLoading(true);
     const myMessage: MessageProps = { text: input, from: Creator.User, key: new Date().getTime() };
     setMessage([...messageRef.current, myMessage]);
-    
+
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/chat/ask`, {method:'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({text: input})
@@ -31,10 +31,7 @@ export default function Home() {
     }else{
       //show error
     }
-
-    
   }
-
 
   return (
     <main className='bg-thembg'>
