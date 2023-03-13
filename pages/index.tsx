@@ -3,6 +3,7 @@ import { Creator, MessageProps } from '@/interfaces/models';
 import useState from 'react-usestateref';
 import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
+import { baseUrl } from '@/configs';
 
 const inter = Inter({ subsets: ['latin'] });
 var test: MessageProps[] = [
@@ -40,7 +41,7 @@ export default function Home() {
 			console.log('Transliterated Text: ', response);
 		});
 
-		const res = await fetch('http://127.0.0.1:8000/chat/ask', {
+		const res = await fetch(baseUrl + '/chat/ask', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ text: input }),
