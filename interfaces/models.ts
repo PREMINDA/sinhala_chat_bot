@@ -49,3 +49,7 @@ export interface SinhalaList{
   textNumber:number;
   location:number;
 }
+
+export interface AlertMessage{
+  message:string;
+}

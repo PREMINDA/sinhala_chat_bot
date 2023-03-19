@@ -3,10 +3,15 @@ import { Creator, MessageProps } from '@/interfaces/models'
 import useState from 'react-usestateref'
 import ChatMessage from '@/components/ChatMessage'
 import ChatInput from '@/components/ChatInput'
+import styles from '@/styles/Home.module.css'
 
 
 const inter = Inter({ subsets: ['latin'] })
-var test:MessageProps[] = [{text: "test", from: Creator.User, key: 1}, {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 2},{text: "test", from: Creator.User, key: 3}, {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 4}];
+var test:MessageProps[] = [{text: "test", from: Creator.User, key: 1}, 
+{text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 2}
+,{text: "test", from: Creator.User, key: 3},
+ {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 4}
+];
 
 export default function Home() {
   const [message, setMessage, messageRef] = useState<MessageProps[]>(test);
@@ -21,7 +26,9 @@ export default function Home() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/chat/ask`, {method:'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({text: input})
-    }).then((res) => res.json());
+    }).then((res) => res.json()).catch((error:any)=>{
+      console.error(error);
+    });
 
     setLoading(false);
 
@@ -40,8 +47,8 @@ export default function Home() {
         {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text}/> })}
         {message.length==0&&<p className='text-center text-gray-400'>I am at your Service</p>}
       </div>
-      <div className='sticky bottom-0 w-full px-4'>
-        <div className='w-full h-24 bg-thembg'>
+      <div className='sticky bottom-0 w-full px-4 z-12'>
+        <div className={styles.inputBg}>
          <ChatInput onSend={(input)=>callApi(input)} disabled={loading}/>
         </div>
       </div>

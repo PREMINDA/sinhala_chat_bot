@@ -1,0 +1,7 @@
+.inputBg{
+    background: rgb(33,45,64);
+    background: linear-gradient(0deg, rgba(33,45,64,1) 60%, rgba(33,45,64,0.95) 80%, rgba(33,45,64,0.01) 100%);
+    height: 12rem;
+    width: 100%;
+    position: relative;
+}

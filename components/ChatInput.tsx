@@ -5,54 +5,24 @@ import SinhalaListview from "./SinhalaListview";
 
 const ChatInput = ({onSend, disabled}:InputProps) => {
    const[input,setInput] = useState('');
-   const[miniInput,setMiniInput1] = useState('');
    const[list,setList,listRef] = useState<string[]>([]);
-   const ref1 = useRef<HTMLInputElement>(null);
    const ref2 = useRef<HTMLInputElement>(null);
    const ref3 = useRef<HTMLInputElement>(null);
    const [activeIndex, setActiveIndex] = useState(0);
-   const [isBackSpce,setIsBackSpce] = useState<boolean>(false);
-
-   
-
-   
+   const [caretPosition, setCaretPosition] = useState<number | null>(null);
 
    const sendInput = () => {
       onSend(input);
       setInput('');
    };
    
-   const handleKeyDownInput = (e:React.KeyboardEvent<HTMLInputElement>) => {
-      if(e.key === 'Enter'){
-         sendInput();
-      }
-      if(e.key === ' '){
-         setInput(input+' ')
-         ref2.current?.focus();
-      }
-      if(e.key === 'Backspace'){
-         setIsBackSpce(true);
-         ref2.current?.focus();
-      }else{
-         setIsBackSpce(false);
-      }
-   }
-
    const handleKeyDownList = (e:React.KeyboardEvent<HTMLInputElement>) => {
       if(list.length>0){
          if(e.key === 'Enter'){
-            ref2.current?.focus();
-            setInput(input+' '+list[activeIndex]);
-            setMiniInput1('');
-            setActiveIndex(0); 
-            setList([]);
+            setLastPar();
          }
          if(e.key === ' '){
-            ref2.current?.focus();
-            setInput(input+' '+list[activeIndex]);
-            setMiniInput1('');
-            setActiveIndex(0);
-            setList([]);
+            setLastPar();
          }
    
          if (e.key === "ArrowUp") {
@@ -66,15 +36,17 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
               prevIndex === list.length - 1 ? 0 : prevIndex + 1
             );
           }
+      }else{
+         if(e.key === 'Enter'){
+            sendInput();
+         }
       }
    }
 
    const sinhalaType=(userInput:string)=>{
-      setMiniInput1(userInput);
       
       let googleTransliterate = require('google-input-tool');
    
-      
       setList([]);
       googleTransliterate(new XMLHttpRequest(), userInput, 'si-t-i0-und', 4).then(function (response: any) {
             response.forEach((element:string[],index:number) => {
@@ -85,13 +57,11 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
    }
 
    const mainInput=(letter:string)=>{
-      if(!isBackSpce){
-         setMiniInput1('');
-         setMiniInput1(lastWord(letter));
-         ref1.current?.focus();
-      }else{
-         setInput(letter)
-      }
+      if (ref2.current) {
+         setCaretPosition(ref2.current.selectionStart);
+       }
+      setInput(letter);
+      sinhalaType(lastWord(letter));
    }
 
    const lastWord =(words:string)=>{
@@ -99,23 +69,32 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
       return n[n.length - 1];
   }
 
+  const removeLastWord=(par:string):string=>{
+   var myString:string = par.substring(0, par.lastIndexOf(" "));
+   return myString
+  }
+
+  const setLastPar=()=>{
+      var without_lst_word = removeLastWord(input);
+      setInput(without_lst_word+' '+list[activeIndex]);
+      setActiveIndex(0); 
+      setList([]);
+  }
+
    return (
-   <div>
+   <div className="absolute top-10 w-full">
       <div>
-         <input onKeyDown={handleKeyDownList} style= {{width: `${miniInput.length}ch`}} className = "text-gray-800 focus:outline-none" value={miniInput} onChange={(e) => sinhalaType(e.target.value)} ref={ref1} type="text"/>
-         <>
-            <div ref={ref3} className="bg-white w-fit">
-               {list && list.map((element:string,index:number)=>{
-                return  <SinhalaListview key={index} location={index} textNumber={activeIndex} text={element}/>
-               })}
-            </div>
-         </>
+         <div ref={ref3} className={`bg-white w-full rounded-md  absolute top-10  p-${list.length>0?1:0} `} >
+            {list && list.slice(0,4).map((element:string,index:number)=>{
+               return  <SinhalaListview key={index} location={index} textNumber={activeIndex} text={element}/>
+            })}
+         </div>
       </div>
     <div className="bg-white border-2 p-2 rounded-lg flex justify-center"> 
         <input 
             ref= {ref2}
             value={input}
-            onKeyDown={handleKeyDownInput}
+            onKeyDown={handleKeyDownList}
             onChange={(e) => {mainInput(e.target.value);}}
             className = "w-full p-2 px-3 text-gray-800 rounded-lg focus:outline-none"
             type="text"
@@ -151,5 +130,7 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
     </div>
    )
 }
+
+{/* className={`bg-white w-fit absolute top-10 `} */}
 
 export default ChatInput;
