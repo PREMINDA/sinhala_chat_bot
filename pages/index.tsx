@@ -36,9 +36,9 @@ export default function Home() {
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({text: input})
     }).then((res) => res.json()).catch((error:any)=>{
-      const lastMessage:MessageProps= messageRef.current[messageRef.current.length-1];
-      lastMessage.text = "Some Thing Went Wrong Try Again....!";
-      lastMessage.error = true;
+      const message = "Somthing Went Wrong Try Again...!"
+      const botMessage: MessageProps = { text: message ,user_input: input, from: Creator.Bot, key: new Date().getTime(), error:true };
+      setMessage([...messageRef.current, botMessage]);
       setErrorMessage(error.message)
       setError(true);
     });
