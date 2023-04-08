@@ -13,7 +13,7 @@ export default function Alert({message,buttonClick}:AlertMessage) {
           <h3 className="text-lg font-medium text-gray-800 dark:text-gray-300">{message}</h3>
       </div>
       <div className="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">
-          Some thing went wrong try again!
+          Something went wrong try again!
       </div>
       <div className="flex justify-end">
           <button onClick={onDissmissClik} type="button" className="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-xs px-3 py-1.5 text-center " data-dismiss-target="#alert-additional-content-5" aria-label="Close">
