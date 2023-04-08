@@ -7,7 +7,6 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
    const[input,setInput] = useState('');
    const[list,setList,listRef] = useState<string[]>([]);
    const ref2 = useRef<HTMLInputElement>(null);
-   const ref3 = useRef<HTMLInputElement>(null);
    const [activeIndex, setActiveIndex] = useState(0);
    const [caretPosition, setCaretPosition] = useState<number | null>(null);
 
@@ -25,6 +24,12 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
             setLastPar();
          }
 
+         if(e.key == "Tab"){
+            e.preventDefault();
+            setActiveIndex((prevIndex) =>
+              prevIndex === list.length - 1 ? 0 : prevIndex + 1
+            );
+         }
          if (e.key === "ArrowUp") {
             e.preventDefault();
             setActiveIndex((prevIndex) =>
@@ -84,7 +89,7 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
    return (
    <div className="absolute top-10 w-full">
       <div>
-         <div ref={ref3} className={`bg-white w-full rounded-md  absolute top-10  p-${list.length>0?1:0} `} >
+         <div className={`bg-white w-full rounded-md  absolute top-10  p-${list.length>0?1:0} `} >
             {list && list.slice(0,4).map((element:string,index:number)=>{
                return  <SinhalaListview key={index} location={index} textNumber={activeIndex} text={element}/>
             })}
