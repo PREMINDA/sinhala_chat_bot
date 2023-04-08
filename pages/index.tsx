@@ -4,6 +4,7 @@ import useState from 'react-usestateref'
 import ChatMessage from '@/components/ChatMessage'
 import ChatInput from '@/components/ChatInput'
 import styles from '@/styles/Home.module.css'
+import Alert from '@/components/Alert'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -41,18 +42,21 @@ export default function Home() {
   }
 
   return (
-    <main className='bg-thembg'>
-    <div className='relative max-w-4xl mx-auto h-screen flex flex-col justify-between'>
-      <div className='px-4 pt-10 '>
-        {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text}/> })}
-        {message.length==0&&<p className='text-center text-gray-400'>I am at your Service</p>}
-      </div>
-      <div className='sticky bottom-0 w-full px-4 z-12'>
-        <div className={styles.inputBg}>
-         <ChatInput onSend={(input)=>callApi(input)} disabled={loading}/>
+    <>
+      <main className='bg-thembg'>
+        <div className='relative max-w-4xl mx-auto h-screen flex flex-col justify-between'>
+          <div className='px-4 pt-10 '>
+            {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text}/> })}
+            {message.length==0&&<p className='text-center text-gray-400'>I am at your Service</p>}
+          </div>
+          <div className='sticky bottom-0 w-full px-4 z-12'>
+            <div className={styles.inputBg}>
+            <ChatInput onSend={(input)=>callApi(input)} disabled={loading}/>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    </main>
+      </main>
+      
+    </>
   )
 }
