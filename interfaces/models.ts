@@ -8,6 +8,7 @@ export  interface MessageProps{
     user_input?:string;
     from: Creator;
     key:number;
+    error?:boolean;
   }
   
 export  interface InputProps{
@@ -52,4 +53,5 @@ export interface SinhalaList{
 
 export interface AlertMessage{
   message:string;
+  buttonClick: ()=>void;
 }
