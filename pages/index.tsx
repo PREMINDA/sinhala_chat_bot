@@ -5,6 +5,7 @@ import ChatMessage from '@/components/ChatMessage'
 import ChatInput from '@/components/ChatInput'
 import styles from '@/styles/Home.module.css'
 import Alert from '@/components/Alert'
+import Modal from '@/components/modal'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,6 +18,7 @@ var test:MessageProps[] = [{text: "test", from: Creator.User, key: 1},
 export default function Home() {
   const [message, setMessage, messageRef] = useState<MessageProps[]>(test);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<boolean>(false);
 
   const callApi = async (input:string) =>{
     setLoading(true);
@@ -28,7 +30,7 @@ export default function Home() {
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({text: input})
     }).then((res) => res.json()).catch((error:any)=>{
-      console.error(error);
+      setError(true);
     });
 
     setLoading(false);
@@ -56,7 +58,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      
+      <Modal></Modal>
     </>
   )
 }
