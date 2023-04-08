@@ -23,7 +23,7 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		"components/SpeechToText.jsx"
+		"components/SpeechToText.tsx"
 	],
 	"exclude": ["node_modules"]
 }

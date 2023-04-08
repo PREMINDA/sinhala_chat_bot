@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="09ea10e1-a57c-411e-8f58-bd13617bfc1c" name="Changes" comment="" />
+    <list default="true" id="b1ae75dd-4407-4bdf-8aba-95a6e1d36515" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Modal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SinhalaListview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SinhalaListview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SpeechToText.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SpeechToText.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

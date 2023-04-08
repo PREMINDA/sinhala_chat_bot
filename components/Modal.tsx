@@ -14,9 +14,7 @@ export default function Modal({children}:any) {
             shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div className="py-4 text-sky-50 bg-slate-700 text-left px-6">
                 <div className="flex-col pb-4">
-                    
                 {children}
-
                 </div>
             </div> 
         </div>
