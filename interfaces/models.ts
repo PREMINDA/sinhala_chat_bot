@@ -52,4 +52,5 @@ export interface SinhalaList{
 
 export interface AlertMessage{
   message:string;
+  buttonClick: ()=>void;
 }

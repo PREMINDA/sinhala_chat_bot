@@ -1,7 +1,8 @@
 import React from 'react'
 import Alert from './Alert'
 
-export default function Modal() {
+export default function Modal({children}:any) {
+
   return (
     <div className="fixed z-50 inset-0 overflow-y-auto">
         <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-centersm:block sm:p-0">
@@ -14,7 +15,7 @@ export default function Modal() {
             <div className="py-4 text-sky-50 bg-slate-700 text-left px-6">
                 <div className="flex-col pb-4">
                     
-                <Alert message=''></Alert>
+                {children}
 
                 </div>
             </div> 

@@ -20,6 +20,10 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<boolean>(false);
 
+  const onAlertClick=()=>{
+    setError(false);
+  }
+
   const callApi = async (input:string) =>{
     setLoading(true);
     const myMessage: MessageProps = { text: input, from: Creator.User, key: new Date().getTime() };
@@ -32,6 +36,8 @@ export default function Home() {
     }).then((res) => res.json()).catch((error:any)=>{
       setError(true);
     });
+
+
 
     setLoading(false);
 
@@ -58,7 +64,10 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <Modal></Modal>
+      {error &&
+       <Modal>
+        <Alert message='' buttonClick={onAlertClick}></Alert>
+      </Modal>}
     </>
   )
 }
