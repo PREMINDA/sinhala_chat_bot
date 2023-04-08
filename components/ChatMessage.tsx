@@ -8,7 +8,7 @@ import { useState } from "react";
 
 
 
-const ChatMessage = ({text, from, user_input }:MessageProps,) => {
+const ChatMessage = ({text, from, user_input,error }:MessageProps,) => {
 
   const [inputUnlike,setInputUnlike] = useState<UserComment>(UserComment.NO_COMMENT);
   const [inputlike,setInputlike] = useState<UserComment>(UserComment.NO_COMMENT);
@@ -69,7 +69,7 @@ const ChatMessage = ({text, from, user_input }:MessageProps,) => {
       {from == Creator.User &&(
           <div className='rounded-xl p-4 mb-8 flex gap-4 items-start whitespace-pre-wrap'>
             <div className='h-8 w-8 rounded-full bg-blue-500' />
-            <p className='text-white text-justify w-11/12' >{text}</p>
+            <p className={`text-justify w-11/12 ${error?'text-red-600':'text-white'}`} >{text}</p>
           </div>
       )}
       {from == Creator.Bot &&(

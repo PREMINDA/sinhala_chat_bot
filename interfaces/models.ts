@@ -8,6 +8,7 @@ export  interface MessageProps{
     user_input?:string;
     from: Creator;
     key:number;
+    error?:boolean;
   }
   
 export  interface InputProps{
