@@ -1,11 +1,8 @@
 #stage 1
-FROM node:latest as node
+FROM node:alpine as node
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm run build --prod
+RUN npm run build
+CMD [ "npm", "start" ]  
 
-
-#stage 2
-FROM nginx:alpine
-COPY --from=node /app/dist/sinhala_chat_bot /usr/share/nginx/html
