@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SpeechContext } from "./context";
+import { OnRecordEnd } from "@/interfaces/models";
 
-const SpeechToText = () => {
+const SpeechToText = ({recordEnd}:OnRecordEnd) => {
   const [transcription, setTranscription] = useState("");
   const {setInput} = useContext<any>(SpeechContext);
   const [isListening, setIsListening] = useState(false)
@@ -9,6 +10,10 @@ const SpeechToText = () => {
   useEffect(() => {
     handleStart()
   }, [isListening])
+
+  const sendInput=(result:string)=>{
+    recordEnd(result);
+  }
 
  const handleStart = () => {
     if(isListening){
@@ -24,6 +29,7 @@ const SpeechToText = () => {
         const result = event.results[0][0].transcript;
         setTranscription(result);
         setInput(result);
+        sendInput(result);
       }
 
       recognition.onerror = (event:any) => {

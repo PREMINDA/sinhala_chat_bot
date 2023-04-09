@@ -55,3 +55,7 @@ export interface AlertMessage{
   message:string;
   buttonClick: ()=>void;
 }
+
+export interface OnRecordEnd{
+  recordEnd:(voice:string)=>void;
+}

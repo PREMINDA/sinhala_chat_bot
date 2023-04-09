@@ -16,6 +16,10 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
       onSend(userInput);
       setUserInput('');
    };
+
+   const voiceRecive=(result:string)=>{
+      setUserInput(result);
+   }
    
    const handleKeyDownList = (e:React.KeyboardEvent<HTMLInputElement>) => {
       if(list.length>0){
@@ -131,7 +135,7 @@ const ChatInput = ({onSend, disabled}:InputProps) => {
                   /> 
                </svg>
             </button>)}
-            {<SpeechToText />}
+            {<SpeechToText recordEnd={(result)=>voiceRecive(result)} />}
          </div>
       </div>
     </ SpeechContext.Provider > 
