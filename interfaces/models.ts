@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 export enum Creator{
     User = 0,
     Bot  = 1
@@ -25,6 +27,10 @@ export enum UserComment{
 export interface likeOption{
   rotaion?: string;
   onLikeClick:()=>void
+}
+
+export interface AutoScrolleDown{
+  divRef:RefObject<HTMLDivElement>
 }
 
 

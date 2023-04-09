@@ -6,6 +6,7 @@ import ChatInput from '@/components/ChatInput'
 import styles from '@/styles/Home.module.css'
 import Alert from '@/components/Alert'
 import Modal from '@/components/Modal'
+import { useRef } from 'react'
 
 
 
@@ -21,6 +22,17 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage,setErrorMessage] = useState<string>('');
+  const DivRef = useRef<HTMLDivElement>(null);
+
+  const AutoDown=()=>{
+    const myDiv = DivRef.current;
+    if (myDiv) {
+      myDiv.scrollTo({ top: myDiv.scrollHeight });
+      myDiv.addEventListener('DOMSubtreeModified', () => {
+          myDiv.scrollTo({ top: myDiv.scrollHeight });
+      });
+    }
+  }
 
   const onAlertClick=()=>{
     setError(false);
@@ -50,16 +62,15 @@ export default function Home() {
     if(res){
       const botMessage: MessageProps = { text: res.response,user_input: input, from: Creator.Bot, key: new Date().getTime(), error:false };
       setMessage([...messageRef.current, botMessage]);
-    }else{
-      //show error
     }
+    AutoDown();
   }
 
   return (
     <>
-      <main className='bg-thembg'>
-        <div className='relative max-w-4xl mx-auto h-screen flex flex-col justify-between'>
-          <div className='px-4 pt-10 '>
+      <main  ref={DivRef} className='bg-thembg h-screen overflow-y-auto'>
+        <div className='relative max-w-4xl mx-auto h-full flex flex-col justify-between'>
+          <div className='px-4 pt-10'>
             {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text} error={item.error}/> })}
             {message.length==0&&<p className='text-center text-gray-400'>I am at your Service</p>}
           </div>

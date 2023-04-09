@@ -40,7 +40,7 @@ const SpeechToText = ({recordEnd}:OnRecordEnd) => {
   }
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center ml-2">
       <button
         onClick={() => setIsListening(prevState => !prevState)}
         className={`${isListening ? 'animate-pulse' : ''} ${isListening?'bg-red-700':'bg-slate-300' } w-8 h-8 rounded-md`}
