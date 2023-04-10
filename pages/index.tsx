@@ -24,7 +24,7 @@ export default function Home() {
   const [errorMessage,setErrorMessage] = useState<string>('');
   const DivRef = useRef<HTMLDivElement>(null);
 
-  const AutoDown=()=>{
+  function AutoDown(){
     const myDiv = DivRef.current;
     if (myDiv) {
       myDiv.scrollTo({ top: myDiv.scrollHeight });
@@ -53,23 +53,23 @@ export default function Home() {
       setMessage([...messageRef.current, botMessage]);
       setErrorMessage(error.message)
       setError(true);
+      AutoDown();
     });
-
-
 
     setLoading(false);
 
     if(res){
       const botMessage: MessageProps = { text: res.response,user_input: input, from: Creator.Bot, key: new Date().getTime(), error:false };
       setMessage([...messageRef.current, botMessage]);
+      AutoDown();
     }
-    AutoDown();
+    
   }
 
   return (
     <>
-      <main  ref={DivRef} className='bg-thembg h-screen scroll-smooth overflow-y-auto'>
-        <div className='relative max-w-4xl mx-auto h-full flex flex-col justify-between'>
+      <main   className='bg-thembg h-screen '>
+        <div ref={DivRef} style={{"padding": "0% 24%"}} className='w-full mx-auto h-full flex flex-col justify-between scroll-smooth overflow-y-scroll'>
           <div className='px-4 pt-10'>
             {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text} error={item.error}/> })}
             {message.length==0&&<p className='text-center text-gray-400'>I am at your Service</p>}

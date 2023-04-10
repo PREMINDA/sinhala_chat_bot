@@ -4,6 +4,8 @@ import ChatInput from './ChatInput'
 import CommentInput from './CommentInput';
 import{LikeSvgOutlinr,LikeSvgFill} from './likeSvg'
 import { useState } from "react";
+import Modal from './Modal';
+import Alert from './Alert';
 
 
 
@@ -14,6 +16,20 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
   const [inputlike,setInputlike] = useState<UserComment>(UserComment.NO_COMMENT);
   const [isCommentDisable,setIsCommentDisable] = useState<boolean>(false);
   const [isReactionDisable,SetIsReactionDisable] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<boolean>(false);
+  const [errorMessage,setErrorMessage] = useState<string>('');
+
+  const onAlertClick=()=>{
+    setErrorMsg(false);
+  }
+
+  const reset=()=>{
+    setInputlike(UserComment.NO_COMMENT);
+    setInputUnlike(UserComment.NO_COMMENT);
+    SetIsReactionDisable(false);
+  }
+
+
 
   const apiCallonCommentPost =async (user_comment:string)=>{
     var payload : CommentPayload = {user_response:user_comment,question: user_input,chatbot_response:text}
@@ -21,8 +37,11 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/feedback/create-response`, {method:'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(payload)
-    }).then((res) => res.json());
-    console.log(res);                                
+    }).then((res) => res.json()).catch(e=>{
+      setErrorMessage(e.message)
+      setErrorMsg(true);
+      reset()
+    });                                
   }
 
   const apiCallonReaction=async(reaction:UserComment)=>{
@@ -34,7 +53,11 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/feedback/create-rate`, {method:'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(payload)
-    }).then((res) => res.json());
+    }).then((res) => res.json()).catch(e=>{
+      setErrorMessage(e.message)
+      setErrorMsg(true);
+      reset();
+    });
     }
     
   }
@@ -97,6 +120,11 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
             {isCommentDisable && <h3 className='w-full flex justify-center text-slate-300 font-medium'>Thanks For Your Resposne</h3>}
           </div>
       )}
+      {errorMsg &&
+       <Modal>
+        <Alert message={errorMessage} buttonClick={onAlertClick}></Alert>
+      </Modal>
+      }
     </>
   );
 };
