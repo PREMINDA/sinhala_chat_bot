@@ -27,6 +27,7 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
     setInputlike(UserComment.NO_COMMENT);
     setInputUnlike(UserComment.NO_COMMENT);
     SetIsReactionDisable(false);
+    setIsCommentDisable(false);
   }
 
 
@@ -38,7 +39,7 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(payload)
     }).then((res) => res.json()).catch(e=>{
-      setErrorMessage(e.message)
+      setErrorMessage("Error on comment")
       setErrorMsg(true);
       reset()
     });                                
@@ -47,14 +48,13 @@ const ChatMessage = ({text, from, user_input,error }:MessageProps) => {
   const apiCallonReaction=async(reaction:UserComment)=>{
     var userReaction:string = UserComment[reaction];
     var payload: ReactionPayload = {question:user_input,reaction:userReaction,chatbot_response:text};
-    console.log(process.env.NEXT_PUBLIC_CHAT_BOT_API);
     if(!(reaction == UserComment.NO_COMMENT)){
       SetIsReactionDisable(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/feedback/create-rate`, {method:'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(payload)
     }).then((res) => res.json()).catch(e=>{
-      setErrorMessage(e.message)
+      setErrorMessage("Error on reaction")
       setErrorMsg(true);
       reset();
     });
