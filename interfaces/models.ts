@@ -30,7 +30,7 @@ export interface likeOption{
 }
 
 export interface AutoScrolleDown{
-  divRef:RefObject<HTMLDivElement>
+  autoDown:(DivRef:React.RefObject<HTMLDivElement>)=>void
 }
 
 

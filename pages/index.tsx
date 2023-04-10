@@ -1,5 +1,5 @@
 import { Inter } from '@next/font/google'
-import { Creator, MessageProps } from '@/interfaces/models'
+import { AutoScrolleDown, Creator, MessageProps } from '@/interfaces/models'
 import useState from 'react-usestateref'
 import ChatMessage from '@/components/ChatMessage'
 import ChatInput from '@/components/ChatInput'
@@ -7,6 +7,7 @@ import styles from '@/styles/Home.module.css'
 import Alert from '@/components/Alert'
 import Modal from '@/components/Modal'
 import { useRef } from 'react'
+import AutoScroll from '@/components/AutoScroll'
 
 
 
@@ -17,22 +18,12 @@ import { useRef } from 'react'
 //  {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 4}
 // ];
 
-export default function Home() {
+function Home({autoDown}:AutoScrolleDown) {
   const [message, setMessage, messageRef] = useState<MessageProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage,setErrorMessage] = useState<string>('');
-  const DivRef = useRef<HTMLDivElement>(null);
-
-  function AutoDown(){
-    const myDiv = DivRef.current;
-    if (myDiv) {
-      myDiv.scrollTo({ top: myDiv.scrollHeight });
-      myDiv.addEventListener('DOMSubtreeModified', () => {
-          myDiv.scrollTo({ top: myDiv.scrollHeight });
-      });
-    }
-  }
+  const DivRef = useRef<HTMLDivElement>(null)
 
   const onAlertClick=()=>{
     setError(false);
@@ -54,7 +45,7 @@ export default function Home() {
       setMessage([...messageRef.current, botMessage]);
       setErrorMessage(error.message)
       setError(true);
-      AutoDown();
+      autoDown(DivRef);
     });
 
     setLoading(false);
@@ -62,7 +53,7 @@ export default function Home() {
     if(res){
       const botMessage: MessageProps = { text: res.response,user_input: input, from: Creator.Bot, key: new Date().getTime(), error:false };
       setMessage([...messageRef.current, botMessage]);
-      AutoDown();
+      autoDown(DivRef);
     }
     
   }
@@ -90,3 +81,5 @@ export default function Home() {
     </>
   )
 }
+
+export default AutoScroll(Home)
