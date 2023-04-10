@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <main  ref={DivRef} className='bg-thembg h-screen overflow-y-auto'>
+      <main  ref={DivRef} className='bg-thembg h-screen scroll-smooth overflow-y-auto'>
         <div className='relative max-w-4xl mx-auto h-full flex flex-col justify-between'>
           <div className='px-4 pt-10'>
             {message && message.map((item) => { return <ChatMessage key={item.key} from={item.from} user_input={item.user_input} text={item.text} error={item.error}/> })}
