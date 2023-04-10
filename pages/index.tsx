@@ -10,15 +10,15 @@ import { useRef } from 'react'
 
 
 
-const inter = Inter({ subsets: ['latin'] })
-var test:MessageProps[] = [{text: "test", from: Creator.User, key: 1}, 
-{text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 2}
-,{text: "test", from: Creator.User, key: 3},
- {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 4}
-];
+// const inter = Inter({ subsets: ['latin'] })
+// var test:MessageProps[] = [{text: "test", from: Creator.User, key: 1}, 
+// {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 2}
+// ,{text: "test", from: Creator.User, key: 3},
+//  {text: "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2022, 98% of websites use JavaScript on the client side for webpage behavior, often incorporating third", from: Creator.Bot, key: 4}
+// ];
 
 export default function Home() {
-  const [message, setMessage, messageRef] = useState<MessageProps[]>(test);
+  const [message, setMessage, messageRef] = useState<MessageProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage,setErrorMessage] = useState<string>('');
@@ -42,6 +42,7 @@ export default function Home() {
     setLoading(true);
     const myMessage: MessageProps = { text: input, from: Creator.User, key: new Date().getTime(), error:false };
     setMessage([...messageRef.current, myMessage]);
+    
 
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_CHAT_BOT_API}/chat/ask`, {method:'POST',
@@ -76,7 +77,7 @@ export default function Home() {
           </div>
           <div className='sticky bottom-0 w-full px-4 z-12'>
             <div className={styles.inputBg}>
-            <ChatInput onSend={(input)=>callApi(input)} disabled={loading}/>
+            <ChatInput onSend={(input)=>{callApi(input)}} disabled={loading}/>
             </div>
           </div>
         </div>
